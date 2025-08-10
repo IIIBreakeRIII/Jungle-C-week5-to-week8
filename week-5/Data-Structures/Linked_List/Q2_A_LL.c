@@ -78,7 +78,7 @@ int main()
 			printList(&ll2);
 			break;
 		case 3:
-		    printf("The resulting linked lists after merging the given linked list are:\n");
+		  printf("The resulting linked lists after merging the given linked list are:\n");
 			alternateMergeLinkedList(&ll1, &ll2); // You need to code this function
 			printf("The resulting linked list 1: ");
 			printList(&ll1);
@@ -103,7 +103,39 @@ int main()
 
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
-    /* add your code here */
+  /* add your code here */
+ 
+  // if 1 of the any lists is empty:
+  if (ll1 -> head == NULL || ll2 -> head == NULL) return;
+  
+  // pointer initialization
+	ListNode *pointer1 = ll1 -> head;
+	ListNode *pointer2 = ll2 -> head;
+
+  while (pointer1 != NULL && pointer2 != NULL) {
+
+    // define next node
+    ListNode *next1 = pointer1 -> next;
+    ListNode *next2 = pointer2 -> next;
+    
+    // route to next node
+    // list1.next_node = list2.current_node
+    // list2.next_node = list1.next_node
+    pointer1->next = pointer2;
+    pointer2->next = next1;
+
+    // refresh all list size
+    ll1->size += 1;
+    ll2->size -= 1;
+
+    // refresh each pointer
+    pointer1 = next1;
+    pointer2 = next2;
+  }
+
+  // if all repeater is end, add the rest one
+  // we add the items into list1, so we don't have to add rest of the list1 
+  ll2->head = pointer2;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
