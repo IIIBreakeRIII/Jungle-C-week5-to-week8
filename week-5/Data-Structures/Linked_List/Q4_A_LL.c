@@ -87,6 +87,78 @@ int main()
 void moveEvenItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+
+  // check null or list size is small than 1
+  if (ll == NULL || ll->size <= 1) return;
+  
+  // make new evenlist for save odd num
+  LinkedList evenList;
+  evenList.head = NULL;
+  evenList.size = 0;
+  
+  // Initialize
+  ListNode *prev = NULL;
+  ListNode *pt = ll->head;
+
+  while (pt != NULL) {
+
+    // if current item is null
+    if (pt->item % 2 == 0) {
+      ListNode *temp = pt;
+      
+      // if current location is head of the list
+      if (prev == NULL) {
+        ll->head = pt->next;
+        pt = ll->head;
+      }
+      // if current location is somewhere except head
+      else {
+        prev->next = pt->next;
+        pt = pt->next;
+      }
+
+      // add in evenList
+      // always add at last of the list
+      temp->next = NULL;
+      
+      // if evenlist is empty
+      if (evenList.head == NULL) {
+        evenList.head = temp;
+      }
+      // if not
+      else {
+        // have to move pointer to tail (finding for NULL)
+        ListNode *evenTail = evenList.head;
+        while (evenTail->next != NULL) {
+          evenTail = evenTail->next;
+        }
+        evenTail->next = temp;
+      }
+      evenList.size++;
+      ll->size--;
+    }
+    else {
+      prev = pt;
+      pt = pt->next;
+    }
+  }
+
+  // if origin list is all odd so we have to change the pointer head to evenlist
+  if (ll->head == NULL) {
+    ll->head = evenList.head;
+    ll->size = evenList.size;
+    return;
+  }
+
+  // find the tail of the origin list
+  ListNode *tail = ll->head;
+
+  while (tail->next != NULL) {
+    tail = tail->next;
+  }
+
+  tail->next = evenList.head;
+  ll->size += evenList.size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
