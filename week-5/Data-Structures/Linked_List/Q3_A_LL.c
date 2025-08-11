@@ -87,6 +87,78 @@ int main()
 void moveOddItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+
+  // check null or list size is small than 1
+  if (ll == NULL || ll->size <= 1) return;
+  
+  // make new oddlist for save odd num
+  LinkedList oddList;
+  oddList.head = NULL;
+  oddList.size = 0;
+  
+  // Initialize
+  ListNode *prev = NULL;
+  ListNode *pt = ll->head;
+
+  while (pt != NULL) {
+
+    // if current item is null
+    if (pt->item % 2 == 1) {
+      ListNode *temp = pt;
+      
+      // if current location is head of the list
+      if (prev == NULL) {
+        ll->head = pt->next;
+        pt = ll->head;
+      }
+      // if current location is somewhere except head
+      else {
+        prev->next = pt->next;
+        pt = pt->next;
+      }
+
+      // add in oddList
+      // always add at last of the list
+      temp->next = NULL;
+      
+      // if oddlist is empty
+      if (oddList.head == NULL) {
+        oddList.head = temp;
+      }
+      // if not
+      else {
+        // have to move pointer to tail (finding for NULL)
+        ListNode *oddTail = oddList.head;
+        while (oddTail->next != NULL) {
+          oddTail = oddTail->next;
+        }
+        oddTail->next = temp;
+      }
+      oddList.size++;
+      ll->size--;
+    }
+    else {
+      prev = pt;
+      pt = pt->next;
+    }
+  }
+
+  // if origin list is all odd so we have to change the pointer head to oddlist
+  if (ll->head == NULL) {
+    ll->head = oddList.head;
+    ll->size = oddList.size;
+    return;
+  }
+
+  // find the tail of the origin list
+  ListNode *tail = ll->head;
+
+  while (tail->next != NULL) {
+    tail = tail->next;
+  }
+
+  tail->next = oddList.head;
+  ll->size += oddList.size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
