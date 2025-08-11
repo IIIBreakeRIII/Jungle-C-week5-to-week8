@@ -38,7 +38,8 @@ int removeNode(LinkedList *ll, int index);
 
 int main()
 {
-	int c, i;
+	int c = 1;
+  int i;
 	LinkedList ll;
 	LinkedList resultFrontList, resultBackList;
 
@@ -60,7 +61,7 @@ int main()
 
 	while (c != 0)
 	{
-	    printf("Please input your choice(1/2/0): ");
+	  printf("Please input your choice(1/2/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -103,6 +104,64 @@ int main()
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
 {
 	/* add your code here */
+  if (ll == NULL || resultFrontList == NULL || resultBackList == NULL) return;
+
+  // Initialize
+  resultFrontList->head = NULL;
+  resultFrontList->size = 0;
+
+  resultBackList->head = NULL;
+  resultBackList->size = 0;
+  
+  // if origin list is empty
+  if (ll->head == NULL || ll->size == 0) {
+    ll->head = NULL;
+    ll->size = 0;
+    return;
+  }
+
+  // if origin list has 1 element
+  if (ll->size == 1) {
+    resultFrontList->head = ll->head;
+    resultFrontList->size = 1;
+
+    resultBackList->head = NULL;
+    resultBackList->size = 0;
+    
+    // clean origin list
+    ll->head = NULL;
+    ll->size = 0;
+    
+    return;
+  }
+  
+  // slow is for frontList
+  // fast is for backList
+  // slow is heading NEXT node
+  // fast is heading NEXT of the NEXT node
+  ListNode *slow = ll->head;
+  ListNode *fast = ll->head->next;
+  
+  while (fast != NULL && fast->next != NULL) {
+      slow = slow->next;
+      fast = fast->next->next;
+  }
+  
+  // define head of the backlist : slow + 1
+  ListNode *backHead = slow->next;
+  // cut frontlist : slow + 1
+  slow->next = NULL;
+
+  resultFrontList->head = ll->head;
+  resultBackList->head  = backHead;
+
+  int frontSize = (ll->size + 1) / 2;
+  int backSize  = ll->size - frontSize;
+  resultFrontList->size = frontSize;
+  resultBackList->size = backSize;
+
+  ll->head = NULL;
+  ll->size = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
