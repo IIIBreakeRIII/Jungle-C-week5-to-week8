@@ -49,11 +49,11 @@ void removeAllItems(LinkedList *ll);
 
 int main()
 {
-    int c, value;
+  int c, value;
 
-    Stack s;
+  Stack s;
 
-    s.ll.head=NULL;
+  s.ll.head=NULL;
 	s.ll.size =0;
 	s.ll.tail =NULL;
 
@@ -78,15 +78,15 @@ int main()
             printList(&(s.ll));
 			break;
 		case 2:
-            if(isStackPairwiseConsecutive(&s))
-            {
-                printf("The stack is pairwise consecutive.\n");
-            }
-            else{
-                printf("The stack is not pairwise consecutive.\n");
-            }
-            removeAllItems(&(s.ll));
-            break;
+      if(isStackPairwiseConsecutive(&s))
+      {
+          printf("The stack is pairwise consecutive.\n");
+      }
+      else{
+          printf("The stack is not pairwise consecutive.\n");
+      }
+      removeAllItems(&(s.ll));
+      break;
 		case 0:
 			removeAllItems(&(s.ll));
 			break;
@@ -96,14 +96,47 @@ int main()
 		}
 	}
 
-    return 0;
+  return 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 
 int isStackPairwiseConsecutive(Stack *s)
 {
-  /* add your code here */
+  // make temp stack
+  Stack aux;
+  aux.ll.head = NULL;
+  aux.ll.size = 0;
+  aux.ll.tail = NULL;
+  
+  // flag for check consecutive
+  int isConsecutive = 1;
+
+  while (!isEmptyStack(s)) {
+
+    int a = pop(s);
+
+    // 
+    if (isEmptyStack(s)) {
+        push(&aux, a);
+        isConsecutive = 0;
+        break;
+    }
+    int b = pop(s);
+
+    if (abs(a - b) != 1) {
+        isConsecutive = 0;
+    }
+
+    push(&aux, b);
+    push(&aux, a);
+  }
+
+  while (!isEmptyStack(&aux)) {
+    push(s, pop(&aux));
+  }
+
+  return isConsecutive;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
