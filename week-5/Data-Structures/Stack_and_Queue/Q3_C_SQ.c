@@ -116,7 +116,6 @@ int isStackPairwiseConsecutive(Stack *s)
 
     int a = pop(s);
 
-    // 
     if (isEmptyStack(s)) {
         push(&aux, a);
         isConsecutive = 0;
