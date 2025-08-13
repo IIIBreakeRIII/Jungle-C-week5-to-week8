@@ -104,9 +104,41 @@ int main()
 ////////////////////////////////////////////////////////////
 int balanced(char *expression)
 {
-/* add your code here */
-}
+  Stack s;
+  s.ll.head = NULL;
+  s.ll.size = 0;
 
+  for (int i = 0; expression[i] != '\0'; i++) {
+    char ch = expression[i];
+
+    if (ch == '(' || ch == '[' || ch == '{') {
+      push(&s, ch);
+    }
+    else if (ch == ')' || ch == ']' || ch == '}') {
+      if (isEmptyStack(&s)) {
+        removeAllItemsFromStack(&s);
+        return 1;
+      }
+      char top = (char)peek(&s);
+      if ((ch == ')' && top == '(') ||
+        (ch == ']' && top == '[') ||
+        (ch == '}' && top == '{')) {
+        pop(&s);
+      } else {
+        removeAllItemsFromStack(&s);
+        return 1;
+      }
+    }
+    else {
+      removeAllItemsFromStack(&s);
+      return 1;
+    }
+  }
+
+  int res = isEmptyStack(&s) ? 0 : 1;
+  removeAllItemsFromStack(&s);
+  return res;
+}
 ////////////////////////////////////////////////////////////
 
 void removeAllItemsFromStack(Stack *s)
