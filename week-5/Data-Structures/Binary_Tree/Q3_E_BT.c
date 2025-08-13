@@ -99,11 +99,13 @@ int main()
 //////////////////////////////////////////////////////////////////////////////////
 
 int countOneChildNodes(BTNode *node)
-
 {
-    /* add your code here */
-}
+    if (node == NULL) return 0;
 
+    int hasOne = (!!node->left) ^ (!!node->right);
+
+    return hasOne + countOneChildNodes(node->left) + countOneChildNodes(node->right);
+}
 ///////////////////////////////////////////////////////////////////////////////////
 
 BTNode *createBTNode(int item)
