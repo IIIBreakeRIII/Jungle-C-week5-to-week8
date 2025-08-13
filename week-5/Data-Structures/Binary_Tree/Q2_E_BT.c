@@ -94,10 +94,33 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int maxHeight(BTNode *node)
+// int maxHeight(BTNode *node)
+// 
+// {
+//   int height = 0;
+//   
+//   if (node->left == NULL && node->right == NULL) return -1;
+//   
+//   if (node->left != NULL) {
+//     maxHeight(node->left);
+//     height += 1;
+//   }
+// 
+//   if (node->right != NULL) {
+//     maxHeight(node->right);
+//     height += 1;
+//   }
+// 
+//   return height;
+// }
 
-{
-    /* add your code here */
+int maxHeight(BTNode *node) {
+  if (node == NULL) return -1;
+
+  int leftHeight = maxHeight(node->left);
+  int rightHeight = maxHeight(node->right);
+
+  return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
